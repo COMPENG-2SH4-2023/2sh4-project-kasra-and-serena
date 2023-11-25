@@ -353,6 +353,72 @@ void testRemoveTail_5Element()
 	// The destructor will be called automatically for stack-allocated objects
 }
 
+//----------------------Additional Test Cases----------------------------
+void testIncreaseArraySizeTail()
+{
+	//test if list increases when inserting tails past max capacity
+	int expectedSize = 205;
+	objPos sample{1,3,'y'};
+
+	objPosArrayList thisList;
+	//insert objPos object into list past max capacity
+	for(int i = 0; i < expectedSize; i++)
+	{
+		thisList.insertTail(sample);
+	}
+	
+	int actualSize = thisList.getSize();
+		
+	// First check the list size is 1
+	ASSERT_EQUAL(expectedSize, actualSize);
+
+	// The destructor will be called automatically for stack-allocated objects
+}
+
+void testIncreaseArraySizeHead()
+{
+	//test if list increases when inserting tails past max capacity
+	int expectedSize = 205;
+	objPos sample{1,3,'y'};
+
+	objPosArrayList thisList;
+	//insert objPos object into list past max capacity
+	for(int i = 0; i < expectedSize; i++)
+	{
+		thisList.insertHead(sample);
+	}
+	
+	int actualSize = thisList.getSize();
+		
+	// First check the list size is 1
+	ASSERT_EQUAL(expectedSize, actualSize);
+
+	// The destructor will be called automatically for stack-allocated objects
+}
+
+void testGetElementInvalid()
+{
+	//test if list increases when inserting tails past max capacity
+	objPos selected;
+	objPos sample{1,3,'y'};
+	int index = -1;
+
+	objPosArrayList thisList;
+	//insert 5 objects
+	for(int i = 0; i < 5; i++)
+	{
+		thisList.insertHead(sample);
+	}
+	objPos expectedObj{-1,-1,'\0'};
+	thisList.getElement(selected, index);
+
+	int actualCheck = expectedObj.isPosEqual(&selected);
+	int expectedCheck = 1;
+		
+	ASSERT_EQUAL(actualCheck, expectedCheck);
+
+	// The destructor will be called automatically for stack-allocated objects
+}
 
 
 
@@ -373,6 +439,9 @@ bool runAllTests(int argc, char const *argv[]) {
 
 
 	//TODO add your test here
+	s.push_back(CUTE(testIncreaseArraySizeTail));
+	s.push_back(CUTE(testIncreaseArraySizeHead));
+	s.push_back(CUTE(testGetElementInvalid));
 
 	cute::xml_file_opener xmlfile(argc, argv);
 	cute::xml_listener<cute::ide_listener<> > lis(xmlfile.out);
