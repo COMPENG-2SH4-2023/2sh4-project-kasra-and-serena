@@ -112,7 +112,7 @@ void Player::movePlayer()
             break;
 
         case UP:
-            if (currH.y <= 0)   //check for top border
+            if (currH.y <= 1)   //check for top border
             {
                 currH.y = mainGameMechsRef->getBoardSizeY() - 2;  //set pos to wraparound
             }
@@ -122,7 +122,7 @@ void Player::movePlayer()
 
         case LEFT:
             //check for left border
-            if (currH.x <= 0)
+            if (currH.x <= 1)
             {
                 currH.x = mainGameMechsRef->getBoardSizeX() - 2;    
             }
