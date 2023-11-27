@@ -97,7 +97,9 @@ void Player::movePlayer()
     //------------Check for Self Collision---------------
     if (checkSelfCollision())
     {
-        mainGameMechsRef->setLoseFlag();
+        //set losing flag to display message then trigger endgame
+        mainGameMechsRef->setLoseFlag(); 
+        mainGameMechsRef->setExitTrue();
     }
 
     //------------PPA3 Finite State Machine logic--------

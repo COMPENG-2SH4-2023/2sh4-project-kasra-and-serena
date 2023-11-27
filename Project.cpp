@@ -135,13 +135,6 @@ void DrawScreen(void)
     //-----------------Score Keeping--------------------
     MacUILib_printf("Your Score: %d\n", myGM->getScore());
 
-    //-----------------Losing Message/shutdown----------
-    if (myGM->getLoseFlagStatus())
-    {
-        MacUILib_printf("\nNOOOO, YOU LOST!!!\n");
-        MacUILib_Delay(350000);    //to allow player to see message
-        myGM->setExitTrue();
-    }
 
     //-----------------User instructions----------------
     MacUILib_printf("\nKey Bindings:\n");
@@ -166,6 +159,12 @@ void CleanUp(void)
     delete myGM;
     delete myFood;
     delete myPlayer; 
+
+    //-----------------Losing Message/shutdown----------
+    if (myGM->getLoseFlagStatus())
+    {
+        MacUILib_printf("\nNOOOO, YOU LOST!!!\n");
+    }
   
     MacUILib_uninit();
 }
