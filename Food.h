@@ -17,11 +17,8 @@ class Food
         void getFoodPos(objPos &returnPos); //Getter
         
     private:
-        GameMechs& gameMechs;
-        int i;
-        int n;
+        GameMechs* gameMechsRef;
         objPos foodPos;
-        char foodSymbol;
     };
 
 #endif

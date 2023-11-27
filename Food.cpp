@@ -1,11 +1,12 @@
 #include "Food.h"
 
 
-Food::Food(GameMechs& gm) : gameMechs(gm)
+Food::Food(GameMechs& gm)
 {
-    i = 0;
-    n = 0;
-    foodSymbol = 'o';
+    gameMechsRef = &gm;
+    foodPos.x = 0;
+    foodPos.y = 0;
+    foodPos.symbol = 'o';
 }
 
 void Food::generateFood(objPosArrayList &blockOff)
@@ -18,15 +19,16 @@ void Food::generateFood(objPosArrayList &blockOff)
 
     do 
     {
-        randomNumX = (rand() % (gameMechs.getBoardSizeX() - 2)) + 1;
-        randomNumY = (rand() % (gameMechs.getBoardSizeY() - 2)) + 1;
+        //generate random x and y positions
+        randomNumX = (rand() % (gameMechsRef->getBoardSizeX() - 2)) + 1;
+        randomNumY = (rand() % (gameMechsRef->getBoardSizeY() - 2)) + 1;
 
         int overlap = false;
         objPos tempBlock;
         for (int k = 0; k < blockOff.getSize(); k++)    //check if generated position is in list
         {
             blockOff.getElement(tempBlock,k);
-            if (randomNumX == (tempBlock.x && randomNumY == tempBlock.y))
+            if (randomNumX == tempBlock.x && randomNumY == tempBlock.y)
             {
                 overlap = true;
                 break;
@@ -39,10 +41,9 @@ void Food::generateFood(objPosArrayList &blockOff)
 
     foodPos.x = randomNumX;
     foodPos.y = randomNumY;
-    foodPos.symbol = foodSymbol;
 }
 
 void Food::getFoodPos(objPos &returnPos)
 {
-    returnPos = foodPos; // FIX THIS ITS NOT ACTUALLY THIS I DONT THINK
+    returnPos = foodPos;
 }
