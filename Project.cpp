@@ -77,22 +77,35 @@ void DrawScreen(void)
 {
     MacUILib_clearScreen(); //clear previous frame
 
-    objPosArrayList *playerBody = myPlayer->getPlayerPos(); //get current list
     objPos tempBody, tempFood;
     bool objFound;
+    objPosArrayList *playerBody = myPlayer->getPlayerPos(); //get current snake body list
+    objPosArrayList *foodBucket = myFood->getFoodPos(); //get current food list
+    
 
     //----------------------------Game Mechanics Information----------------------------------
-    MacUILib_printf("Boardsize:%dx%d Snake Size: %d Player Positions:\n", myGM->getBoardSizeX(), myGM->getBoardSizeY(), playerBody->getSize());
+    
+    MacUILib_printf("Boardsize:%dx%d\n", myGM->getBoardSizeX(), myGM->getBoardSizeY());
+    
+    //Uncomment for debugging/viewing purposes
+    /*
+    MacUILib_printf("Player Positions: ");
     for (int m = 0; m < playerBody->getSize(); m++)
     {
         playerBody->getElement(tempBody, m);
         MacUILib_printf("<%d,%d>",tempBody.x, tempBody.y);
     }
 
-    myFood->getFoodPos(tempFood);
-    MacUILib_printf("\nFood Position: <%d,%d>", tempFood.x, tempFood.y);
+    MacUILib_printf("\nFood Position: ");
+    for(int n = 0; n < foodBucket->getSize(); n++)
+    {
+        foodBucket->getElement(tempFood, n);
+        MacUILib_printf("<%d,%d>", tempFood.x, tempFood.y);
+    }
 
     MacUILib_printf("\n\n");
+
+    */
 
     //-----------------------------Print gameboard on screen-----------------------------
     for(int j = 0; j < myGM->getBoardSizeY(); j++)   //iterate through each element of game board
@@ -101,19 +114,16 @@ void DrawScreen(void)
         {
             objFound = false;
 
-            //draw border (x or y =  0 or n) and food object
+            //draw border (x or y =  0 or n)
             if (j == 0 || j == (myGM->getBoardSizeY() - 1) || i == 0 || i == (myGM->getBoardSizeX() - 1))
             {
                 MacUILib_printf("#");
-            }
-            else if (i == tempFood.x && j == tempFood.y)
-            {
-                MacUILib_printf("%c", tempFood.symbol);
+                objFound = true;
             }
             
             else
             {
-                //draw snake by iterating through each part of the body
+                //check for snake body by iterating through each element
                 for(int k = 0; k < playerBody->getSize(); k++)
                 {
                     playerBody->getElement(tempBody,k);
@@ -124,16 +134,31 @@ void DrawScreen(void)
                         break;
                     }
                 }
-                if(!objFound)
+
+                //check for food in foodBucket
+                for (int p = 0; p < foodBucket->getSize(); p++)
+                {
+                    foodBucket->getElement(tempFood, p);
+                    if (i == tempFood.x && j == tempFood.y)
+                    {
+                        MacUILib_printf("%c", tempFood.symbol);
+                        objFound = true;
+                        break;
+                    }
+                }
+                if (!objFound)  //object not found, print space
                     MacUILib_printf(" ");
- 
+                
+
             }
+            
         }
         MacUILib_printf("\n");
     }
 
     //-----------------Score Keeping--------------------
-    MacUILib_printf("Your Score: %d\n", myGM->getScore());
+    MacUILib_printf("Your Score: %d\nSnake Size: %d\n\n", myGM->getScore(), playerBody->getSize());
+    MacUILib_printf("Food -> '+' = +10 points, 'o' = +1 point and +1 snake length\n");
 
 
     //-----------------User instructions----------------
@@ -155,16 +180,16 @@ void CleanUp(void)
 {
     MacUILib_clearScreen();   
 
-    //delete heap elements
-    delete myGM;
-    delete myFood;
-    delete myPlayer; 
-
     //-----------------Losing Message/shutdown----------
     if (myGM->getLoseFlagStatus())
     {
         MacUILib_printf("\nNOOOO, YOU LOST!!!\n");
     }
+
+    //delete heap elements
+    delete myGM;
+    delete myFood;
+    delete myPlayer; 
   
     MacUILib_uninit();
 }

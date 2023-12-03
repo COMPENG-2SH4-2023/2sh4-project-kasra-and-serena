@@ -24,7 +24,7 @@ class Player
         void updatePlayerDir();
         void movePlayer();
 
-        bool checkFoodConsumption();
+        bool checkFoodConsumption(char &foodType);
         bool checkSelfCollision();
 
     private:

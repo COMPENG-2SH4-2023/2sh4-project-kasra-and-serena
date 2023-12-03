@@ -24,10 +24,9 @@ GameMechs::GameMechs(int boardX, int boardY)
 }
 
 /*
-// do you need a destructor?
 GameMechs::~GameMechs()
 {
-    //Empty for now?
+    //Empty
 }
 */
 
@@ -85,9 +84,9 @@ void GameMechs::clearInput()
     input = '\0';
 }
 
-void GameMechs::incrementScore()
+void GameMechs::incrementScore(int amount)
 {
-    score += 1;
+    score += amount;
 }
 
 int GameMechs::getScore()

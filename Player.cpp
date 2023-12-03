@@ -159,11 +159,22 @@ void Player::movePlayer()
     playerPosList->insertHead(currH);
 
     //-----------------check for food consumption-----------
-    
-    if (checkFoodConsumption())
+    char foodType;
+    int amount = 1;
+
+    if (checkFoodConsumption(foodType))
     {
+        if (foodType == '+')    //special food consumed -> increment score by 10 points
+        {
+            amount = 10;
+            mainGameMechsRef->incrementScore(amount);
+        }
+        else
+        {
+            mainGameMechsRef->incrementScore(amount); //regular food consumed -> 1 point
+        }
+
         foodRef->generateFood(*playerPosList);    //generate new food and add to score
-        mainGameMechsRef->incrementScore();
     }
     else
     {
@@ -172,13 +183,25 @@ void Player::movePlayer()
 
 }
 
-bool Player::checkFoodConsumption() //check if food position and head position are equal
+bool Player::checkFoodConsumption(char &foodType)
 {
     objPos head, foodPos;
-    playerPosList->getHeadElement(head);
-    foodRef->getFoodPos(foodPos);
+    objPosArrayList* foodBucket;
 
-    return head.isPosEqual(&foodPos);
+    playerPosList->getHeadElement(head);
+    foodBucket = foodRef->getFoodPos();
+    
+    for (int i = 0; i < foodBucket->getSize(); i++)
+    {
+        foodBucket->getElement(foodPos, i);
+        if (head.isPosEqual(&foodPos))  //check if food position and head position are equal
+        {
+            foodType = foodPos.getSymbolIfPosEqual(&head);          //if food is consumed, determine the type of food
+            return true;
+        }
+    }
+
+    return false;
 }
 
 bool Player::checkSelfCollision()
