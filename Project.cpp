@@ -163,8 +163,8 @@ void DrawScreen(void)
 
     //-----------------User instructions----------------
     MacUILib_printf("\nKey Bindings:\n");
-    MacUILib_printf("Movement -> UP = W, LEFT = A, DOWN = S, RIGHT = D\n");
-    MacUILib_printf("Press space to exit");
+    MacUILib_printf("Movement -> UP = W, LEFT = A, DOWN = S, RIGHT = D  \n");
+    MacUILib_printf("Press the space bar to exit");
 
 
 
